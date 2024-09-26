@@ -1,3 +1,7 @@
+import { createElement } from "react";
+import generateimage from "~/assets/vector.png";
+import downloadimage from "~/assets/Vector (1).png";
+import regenerateimage from "~/assets/Vector (2).png";
 export default defineContentScript({
   matches: ["*://*.linkedin.com/*"], // Targets LinkedIn
   main() {
@@ -140,11 +144,12 @@ function showPromptForInput(
   promptPopup.appendChild(buttonDiv);
 
   //creating and adding generate button
-  const generateButton = button("» Generate");
+
+  const generateButton = button("Generate", generateimage);
+
   buttonDiv.appendChild(generateButton);
   generateButton.style.backgroundColor = "#3B82F6";
   generateButton.style.color = "#ffff";
-
   const value = `Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.`; //dummy data
 
   //generate button functionality
@@ -165,8 +170,8 @@ function showPromptForInput(
     inputField.innerHTML = ``; // Inserts the prompt as HTML
     textarea.value = ""; // Clear the textarea
     buttonDiv.innerHTML = ""; // Remove Generate button and add ReGenerate and Insert buttons
-    const insertButton = button(" ⬇ Insert");
-    const regenerateButton = button(" ↺ ReGenerate");
+    const insertButton = button("  Insert", downloadimage);
+    const regenerateButton = button("  ReGenerate", regenerateimage);
     regenerateButton.style.backgroundColor = "#3B82F6";
     regenerateButton.style.color = "white";
 
@@ -202,14 +207,32 @@ function showPromptForInput(
     { once: true }
   );
 }
-
-function button(text: string) {
+function button(text: string, imgSrc: string) {
   const button = document.createElement("button");
-  button.innerText = text;
+  // Create an img element
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  // Debugging logs
+  img.onload = () => console.log("Image loaded successfully:", imgSrc);
+  img.onerror = () => {
+    console.error(`Error loading image: ${imgSrc}`);
+  };
+  img.style.width = "16px"; // Adjust the size of the image
+  img.style.height = "auto"; // Adjust the size of the image
+  img.style.marginRight = "8px"; // Add some spacing between the image and the text
+  img.style.objectFit = "contain";
+  // Append the image and text to the button
+  button.appendChild(img);
+  button.append(text);
+button.style.fontSize = "14px";
   button.style.padding = "5px 10px";
-  button.style.border = "1px solid #e0e0e0 ";
+  button.style.border = "1px solid #e0e0e0";
   button.style.borderRadius = "4px";
   button.style.marginTop = "10px";
+  button.style.display = "flex"; // Flex to align image and text
+  button.style.alignItems = "center"; // Center the content
+  button.style.justifyItems = "center"; // Center the content
+
   return button;
 }
 
