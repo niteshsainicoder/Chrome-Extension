@@ -4,7 +4,11 @@ This chrome-extension helps you to write a good reply or response without changi
 
 ## video Demonstration
 
-[Watch the Video Demonstration](c:\Users\91946\Downloads\Untitled video - Made with Clipchamp (3).mp4)
+[Watch the Video Demonstration](
+
+https://github.com/user-attachments/assets/d438890e-9955-4fb6-ae04-3f3ea63ffa4c
+
+)
 
 ### To install the extension:
 
