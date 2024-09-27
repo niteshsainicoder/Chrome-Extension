@@ -39,18 +39,22 @@ function insertButtonIntoMessageDiv() {
       button.id = "AIresponseGenerateButton";
       button.innerText = "🪄";
       button.style.position = "absolute";
-      button.style.right = "10px";
-      button.style.height = "20px";
+      button.style.right = "7px";
+      button.style.width = "21px";
+      button.style.textAlign = "center";
+      button.style.height = "21px";
       button.style.bottom = "5px";
       button.style.zIndex = "1000"; // Ensures visibility
       button.style.backgroundColor = "#ffff"; // LinkedIn's theme color
       button.style.color = "white";
       button.style.border = "1px solid #e0e0e0";
-      button.style.borderRadius = "5px";
+      button.style.borderRadius = "100%";
       button.style.cursor = "pointer";
-      button.style.padding = "0 3px 1px 3px";
+      button.style.padding = " 1px";
       // Append image to button
-
+      button.addEventListener("click", () => {
+        button.style.border = "1px solid #0ea5e9";
+      });
       const parent = messageDiv.parentElement;
       if (parent) {
         parent.style.position = "relative"; // Ensure the parent is relatively positioned
@@ -118,6 +122,7 @@ function showPromptForInput(
   const textareadiv = document.createElement("div");
   textareadiv.style.display = "flex";
   textareadiv.style.flexDirection = "column";
+
   promptPopup.appendChild(textareadiv);
 
   //creating and adding text area into textarea div
@@ -133,7 +138,14 @@ function showPromptForInput(
   textarea.style.borderColor = "#e0e0e0 "; // Change border color on focus
   textarea.style.borderWidth = "1px"; // Increase border width
   textarea.style.margin = "0 auto";
+
   textareadiv.appendChild(textarea);
+
+  requestAnimationFrame(() => {
+    textarea.focus();
+    textarea.selectionStart = textarea.value.length; // Move cursor to the end
+    textarea.selectionEnd = textarea.value.length; // Move cursor to the end
+  });
 
   //creating and adding button div
   const buttonDiv = document.createElement("div");
@@ -153,7 +165,9 @@ function showPromptForInput(
   const value = `Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.`; //dummy data
 
   //generate button functionality
-  generateButton.addEventListener("click", () => {
+  generateButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+
     if (textarea.value === "") {
       alert("Please enter a prompt");
       return;
@@ -166,7 +180,10 @@ function showPromptForInput(
 
     //for create and adding the message component in the textarea
     addmessage(false, textarea.value, chatdiv);
-    addmessage(true, value, chatdiv);
+    setTimeout(() => {
+      addmessage(true, value, chatdiv);
+    }, 500);
+
     inputField.innerHTML = ``; // Inserts the prompt as HTML
     textarea.value = ""; // Clear the textarea
     buttonDiv.innerHTML = ""; // Remove Generate button and add ReGenerate and Insert buttons
@@ -177,11 +194,6 @@ function showPromptForInput(
 
     buttonDiv.appendChild(insertButton);
     buttonDiv.appendChild(regenerateButton);
-
-    //regenerate button functionality
-    regenerateButton.addEventListener("click", () => {
-      textarea.value = `<p>This is the regenerated dummy data</p>`;
-    });
 
     //insert button functionality
     insertButton.addEventListener("click", () => {
@@ -224,7 +236,7 @@ function button(text: string, imgSrc: string) {
   // Append the image and text to the button
   button.appendChild(img);
   button.append(text);
-button.style.fontSize = "14px";
+  button.style.fontSize = "14px";
   button.style.padding = "5px 10px";
   button.style.border = "1px solid #e0e0e0";
   button.style.borderRadius = "4px";
