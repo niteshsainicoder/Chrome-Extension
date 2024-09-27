@@ -2,6 +2,7 @@ import { createElement } from "react";
 import generateimage from "~/assets/vector.png";
 import downloadimage from "~/assets/Vector (1).png";
 import regenerateimage from "~/assets/Vector (2).png";
+import buttonimage from "~/assets/Vector (3).png";
 export default defineContentScript({
   matches: ["*://*.linkedin.com/*"], // Targets LinkedIn
   main() {
@@ -35,14 +36,29 @@ function insertButtonIntoMessageDiv() {
     if (!document.querySelector("#generateButton")) {
       console.log("Message div found. Inserting button...");
 
+      const img = document.createElement("img");
+      img.src = buttonimage;
+      // Debugging logs
+      img.onload = () => console.log("Image loaded successfully:", buttonimage);
+      img.onerror = () => {
+        console.error(`Error loading image: ${buttonimage}`);
+      };
+      img.style.width = "auto"; // Adjust the size of the image
+      img.style.height = "auto"; // Adjust the size of the image
+     img.style.padding="1px" // Add some spacing between the image and the text
+      img.style.objectFit = "contain";
+      // Append the image and text to the button
+
       const button = document.createElement("button");
       button.id = "AIresponseGenerateButton";
-      button.innerText = "🪄";
       button.style.position = "absolute";
       button.style.right = "7px";
-      button.style.width = "21px";
+      button.style.width = "25px";
       button.style.textAlign = "center";
-      button.style.height = "21px";
+      button.style.height = "25px";
+      button.style.display = "flex";
+      button.style.justifyContent = "center";
+      button.style.alignItems = "center";
       button.style.bottom = "5px";
       button.style.zIndex = "1000"; // Ensures visibility
       button.style.backgroundColor = "#ffff"; // LinkedIn's theme color
@@ -50,11 +66,13 @@ function insertButtonIntoMessageDiv() {
       button.style.border = "1px solid #e0e0e0";
       button.style.borderRadius = "100%";
       button.style.cursor = "pointer";
-      button.style.padding = " 1px";
+      button.style.padding = " 2px";
       // Append image to button
       button.addEventListener("click", () => {
         button.style.border = "1px solid #0ea5e9";
       });
+      button.appendChild(img);
+
       const parent = messageDiv.parentElement;
       if (parent) {
         parent.style.position = "relative"; // Ensure the parent is relatively positioned
